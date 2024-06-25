@@ -1,21 +1,30 @@
-import userService from '../services/userService.js';
+import userService from "../services/userService.js";
+import NotfoundError from "../error/NotfoundError.js";
 
 // API - 1 Get All Users
 const getAllUsers = async (req, res, next) => {
-  const users = await userService.getUsers();
-  res.status(200).json({ message: 'Get All Users', data: users });
+	const users = await userService.getUsers();
+	res.status(200).json({ message: "Get All Users", data: users });
 };
 
 // API - 2 Get User By ID
 const getUserById = async (req, res, next) => {
-  const { id } = req.params;
-  const user = await userService.getUserById(Number(id));
-  res.status(200).json({ message: 'Get User By ID', data: user });
+	try {
+		const { id } = req.params;
+		const user = await userService.getUserById(Number(id));
+
+		// fallback
+		if (!user) throw new NotfoundError("User Not found"); // => create err obj
+
+		res.status(200).json({ message: "Get User By ID", data: user });
+	} catch (error) {
+		next(error); // forward => erroeMiddleware
+	}
 };
 
 // API - 14 Delete User By ID (Soft Delete)
 const deleteUserById = async (req, res, next) => {
-  res.send('DELETE /api/users/:id');
+	res.send("DELETE /api/users/:id");
 };
 
 export { getAllUsers, getUserById, deleteUserById };

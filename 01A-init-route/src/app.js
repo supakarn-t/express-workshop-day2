@@ -5,6 +5,7 @@ import express from "express";
 import authRoute from "./routes/authRoute.js";
 import userRoute from "./routes/userRoute.js";
 import movieRoute from "./routes/movieRoute.js";
+import movieListRoute from "./routes/movieListRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -20,6 +21,7 @@ const PORT = process.env.PORT || 8000;
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/movies", movieRoute);
+app.use("/api/movie-lists", movieListRoute);
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
